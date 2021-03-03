@@ -4,6 +4,7 @@ public class IncorrectInputException extends Exception {
 
     /**
      * Own exception if incorrect input is readed
+     *
      * @param errorMessage
      */
     public IncorrectInputException(String errorMessage) {

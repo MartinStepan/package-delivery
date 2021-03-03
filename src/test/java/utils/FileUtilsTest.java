@@ -1,4 +1,4 @@
-package bsc.packagedelivery;
+package utils;
 
 import bsc.packagedelivery.exceptions.ExtensionException;
 import bsc.packagedelivery.utils.FileUtils;
@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @TestPropertySource(properties = {
         "file.extension.support=txt"
 })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class FileUtilsTest {
 
     @Autowired

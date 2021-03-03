@@ -20,6 +20,6 @@ public class PackageDeliveryApplication implements CommandLineRunner {
 	public void run(String... args) {
 		packageDeliveryFacade.runPeriodicallyPrint();
 		packageDeliveryFacade.runFileParser(args);
-		packageDeliveryFacade.runCommandLineParser();
+		packageDeliveryFacade.runUserInputParser();
 	}
 }

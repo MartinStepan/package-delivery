@@ -1,6 +1,7 @@
 package bsc.packagedelivery.input.parser;
 
 import bsc.packagedelivery.exceptions.IncorrectInputException;
+import bsc.packagedelivery.model.FeeStorage;
 import bsc.packagedelivery.model.PackageDeliveryStorage;
 import bsc.packagedelivery.utils.Utils;
 import org.slf4j.Logger;
@@ -19,6 +20,9 @@ public abstract class PackageLineParser implements Parser {
     @Autowired
     protected Utils utils;
 
+    @Autowired
+    protected FeeStorage feeStorage;
+
     @Override
     public void parseInput(String input) throws IncorrectInputException, NumberFormatException, IOException {
         input = input.trim();
@@ -34,7 +38,8 @@ public abstract class PackageLineParser implements Parser {
 
         double weight = utils.findAndReturnWeight(input);
         String postCode = utils.findAndReturnPostCode(input);
+        double fee = feeStorage.getFeeForWeight(weight);
 
-        packageStorage.storeNewPackage(postCode, weight);
+        packageStorage.storeNewPackage(postCode, weight, fee);
     }
 }

@@ -33,4 +33,8 @@ public class Utils {
 
         return postCode;
     }
+
+    public double findAndReturnFee(String inputLine) throws NumberFormatException {
+        return Double.parseDouble(inputLine.substring(inputLine.indexOf(" ")).trim());
+    }
 }

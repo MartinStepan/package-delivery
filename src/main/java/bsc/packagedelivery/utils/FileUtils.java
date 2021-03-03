@@ -2,16 +2,22 @@ package bsc.packagedelivery.utils;
 
 import bsc.packagedelivery.exceptions.ExtensionException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class FileUtils {
+
+    static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     @Value("#{'${file.extension.support}'.split(',')}")
     List<String> fileExtension;
@@ -67,5 +73,26 @@ public class FileUtils {
     public boolean fileExist(String filename) {
         Path path = Paths.get(filename);
         return Files.exists(path) && !Files.isDirectory(path);
+    }
+
+    public List<String> parseFile(String filename) throws IOException {
+        log.info("Parsing file {}", filename);
+        List<String> lines = new ArrayList<>();
+
+        try {
+            checkFileExtension(filename);
+        } catch (ExtensionException e) {
+            log.warn(e.toString());
+            return lines;
+        }
+
+        if(!fileExist(filename)) {
+            log.warn("File {} not found", filename);
+            return lines;
+        }
+
+        Files.lines(Paths.get(filename)).forEach(line -> lines.add(line));
+
+        return lines;
     }
 }

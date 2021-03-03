@@ -1,4 +1,4 @@
-package bsc.packagedelivery;
+package utils;
 
 import bsc.packagedelivery.exceptions.IncorrectInputException;
 import bsc.packagedelivery.utils.Utils;
@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         "package.weight.decimal.places=3",
         "package.post.code.digits=5"
 })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UtilsTest {
 
     @Autowired

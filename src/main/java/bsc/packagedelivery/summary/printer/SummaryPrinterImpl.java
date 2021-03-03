@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.Map.Entry.comparingByValue;
 
 @Component
 public class SummaryPrinterImpl implements SummaryPrinter {
@@ -36,8 +33,8 @@ public class SummaryPrinterImpl implements SummaryPrinter {
 
     public SummaryPrinterImpl() {
         this.scheduledTask = () ->
-            packageStorage.getPackagesByPostCode().entrySet().stream().sorted(Collections.reverseOrder(comparingByValue())).forEach(entry ->
-                log.info("{} {}", entry.getKey(), entry.getValue())
+            packageStorage.getPackagesByPostCodeWithFees().entrySet().stream().sorted((o1, o2) -> Double.compare(o2.getValue().getWeight(), o1.getValue().getWeight()) ).forEach(entry ->
+                log.info("{} {} {}", entry.getKey(), entry.getValue().getWeight(), entry.getValue().getFee())
             );
         log.debug("Scheduled task created");
     }

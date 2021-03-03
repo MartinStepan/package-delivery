@@ -1,5 +1,6 @@
 package bsc.packagedelivery.facade;
 
+import bsc.packagedelivery.input.parser.FeeParser;
 import bsc.packagedelivery.input.parser.PackageLineParser;
 import bsc.packagedelivery.summary.printer.SummaryPrinter;
 import org.slf4j.Logger;
@@ -23,6 +24,10 @@ public class PackageDeliveryFacadeImpl implements PackageDeliveryFacade {
     @Autowired
     private PackageLineParser fileParser;
 
+    @Qualifier("feeParser")
+    @Autowired
+    private FeeParser feeParser;
+
     @Autowired
     private SummaryPrinter packageByWeightSummaryPrinter;
 
@@ -30,7 +35,18 @@ public class PackageDeliveryFacadeImpl implements PackageDeliveryFacade {
 
     public void runFileParser(String... args) {
         if(args.length > 0) {
+            if(args.length > 1) {
+                try {
+                    log.debug("args[1] argument: {}", args[1]);
+                    feeParser.parseInput(args[1]);
+                }
+                catch (Exception e) {
+                    log.warn(e.toString());
+                }
+            }
+
             try {
+                log.debug("args[0] argument: {}", args[0]);
                 fileParser.parseInput(args[0]);
             }
             catch (Exception e) {
@@ -39,7 +55,7 @@ public class PackageDeliveryFacadeImpl implements PackageDeliveryFacade {
         }
     }
 
-    public void runCommandLineParser() {
+    public void runUserInputParser() {
 
         while(true) {
             if (scanner.hasNextLine()) {
